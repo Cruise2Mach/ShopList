@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="ShopList.Views.RegisterPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Create account"
+    BackgroundColor="{AppThemeBinding Light=#F6F6F6, Dark=#181818}">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="32"
+            Spacing="16"
+            MaximumWidthRequest="480"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+
+            <Label
+                Text="Create your account"
+                FontSize="32"
+                FontAttributes="Bold"
+                HorizontalOptions="Center" />
+
+            <Entry
+                x:Name="DisplayNameEntry"
+                Placeholder="Display name"
+                ReturnType="Next"
+                MaxLength="80"
+                ClearButtonVisibility="WhileEditing" />
+
+            <Entry
+                x:Name="EmailEntry"
+                Placeholder="Email address"
+                Keyboard="Email"
+                ReturnType="Next"
+                ClearButtonVisibility="WhileEditing" />
+
+            <Entry
+                x:Name="PasswordEntry"
+                Placeholder="Password"
+                IsPassword="True"
+                ReturnType="Next" />
+
+            <Entry
+                x:Name="ConfirmPasswordEntry"
+                Placeholder="Confirm password"
+                IsPassword="True"
+                ReturnType="Go"
+                Completed="OnConfirmPasswordCompleted" />
+
+            <Label
+                Text="Use at least 8 characters."
+                FontSize="13"
+                Opacity="0.65" />
+
+            <Label
+                x:Name="MessageLabel"
+                IsVisible="False"
+                HorizontalTextAlignment="Center" />
+
+            <ActivityIndicator
+                x:Name="BusyIndicator"
+                IsVisible="False"
+                IsRunning="False"
+                HorizontalOptions="Center" />
+
+            <Button
+                x:Name="RegisterButton"
+                Text="Create account"
+                Clicked="OnRegisterClicked" />
+
+            <Button
+                Text="Back to sign in"
+                Clicked="OnBackToLoginClicked"
+                BackgroundColor="Transparent" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

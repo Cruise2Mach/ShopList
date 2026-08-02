@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="ShopList.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="{AppThemeBinding Light=#F6F6F6, Dark=#181818}"
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="32"
+            Spacing="16"
+            MaximumWidthRequest="480"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+
+            <Label
+                Text="ShopList"
+                FontSize="40"
+                FontAttributes="Bold"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Sign in to access your shared shopping lists."
+                FontSize="16"
+                HorizontalTextAlignment="Center"
+                Opacity="0.75" />
+
+            <Entry
+                x:Name="EmailEntry"
+                Placeholder="Email address"
+                Keyboard="Email"
+                ReturnType="Next"
+                ClearButtonVisibility="WhileEditing" />
+
+            <Entry
+                x:Name="PasswordEntry"
+                Placeholder="Password"
+                IsPassword="True"
+                ReturnType="Go"
+                Completed="OnPasswordCompleted" />
+
+            <Label
+                x:Name="ErrorLabel"
+                IsVisible="False"
+                TextColor="#D32F2F"
+                HorizontalTextAlignment="Center" />
+
+            <ActivityIndicator
+                x:Name="BusyIndicator"
+                IsVisible="False"
+                IsRunning="False"
+                HorizontalOptions="Center" />
+
+            <Button
+                x:Name="SignInButton"
+                Text="Sign in"
+                Clicked="OnSignInClicked" />
+
+            <Button
+            Text="Create an account"
+            Clicked="OnRegisterClicked"
+            BackgroundColor="Transparent"
+            TextColor="{AppThemeBinding Light=#512BD4, Dark=#B9A7FF}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

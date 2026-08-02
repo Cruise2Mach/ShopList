@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <Shell
     x:Class="ShopList.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:ShopList"
-    Title="ShopList">
+    xmlns:views="clr-namespace:ShopList.Views"
+    FlyoutBehavior="Disabled">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Route="login"
+        ContentTemplate="{DataTemplate views:LoginPage}" />
+
+    <ShellContent
+        Route="lists"
+        ContentTemplate="{DataTemplate views:ListsPage}" />
 
 </Shell>
