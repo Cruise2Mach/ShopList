@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Storage;
 using ShopList.Services;
 using ShopList.Views;
 
@@ -24,9 +25,12 @@ public static class MauiProgram
                     "OpenSansSemibold");
             });
 
+        builder.Services.AddSingleton<ISecureStorage>(SecureStorage.Default);
+        builder.Services.AddSingleton<SessionStorageService>();
         builder.Services.AddSingleton<SupabaseService>();
         builder.Services.AddSingleton<AuthService>();
 
+        builder.Services.AddTransient<StartupPage>();
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<RegisterPage>();
         builder.Services.AddTransient<ListsPage>();

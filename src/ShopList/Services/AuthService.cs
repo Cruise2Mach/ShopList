@@ -1,5 +1,7 @@
 ﻿using Supabase.Gotrue;
 
+using SignOutScope = Supabase.Gotrue.Constants.SignOutScope;
+
 namespace ShopList.Services;
 
 public sealed record AuthOperationResult(
@@ -18,6 +20,19 @@ public sealed class AuthService
 
     public bool IsSignedIn =>
         _supabaseService.Client.Auth.CurrentSession is not null;
+
+    public async Task<bool> RestoreSessionAsync()
+    {
+        try
+        {
+            await _supabaseService.InitializeAsync();
+            return IsSignedIn;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 
     public async Task<AuthOperationResult> SignUpAsync(
         string displayName,
@@ -63,6 +78,11 @@ public sealed class AuthService
                 password,
                 options);
 
+            if (session is not null)
+            {
+                await _supabaseService.PersistCurrentSessionAsync();
+            }
+
             return new(
                 true,
                 RequiresEmailConfirmation: session is null);
@@ -93,9 +113,13 @@ public sealed class AuthService
                 email,
                 password);
 
-            return session is null
-                ? new(false, "The server did not return a session.")
-                : new(true);
+            if (session is null)
+            {
+                return new(false, "The server did not return a session.");
+            }
+
+            await _supabaseService.PersistCurrentSessionAsync();
+            return new(true);
         }
         catch (Exception exception)
         {
@@ -105,7 +129,26 @@ public sealed class AuthService
 
     public async Task SignOutAsync()
     {
-        await _supabaseService.InitializeAsync();
-        await _supabaseService.Client.Auth.SignOut();
+        try
+        {
+            await _supabaseService.InitializeAsync();
+            await _supabaseService.Client.Auth.SignOut();
+        }
+        catch
+        {
+            try
+            {
+                await _supabaseService.Client.Auth.SignOut(
+                    SignOutScope.Local);
+            }
+            catch
+            {
+                // Persisted credentials are still cleared below.
+            }
+        }
+        finally
+        {
+            await _supabaseService.ClearPersistedSessionAsync();
+        }
     }
 }
