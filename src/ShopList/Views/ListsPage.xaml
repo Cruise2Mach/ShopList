@@ -63,7 +63,8 @@
             <CollectionView
                 x:Name="ListsCollectionView"
                 IsVisible="False"
-                SelectionMode="None">
+                SelectionMode="Single"
+                SelectionChanged="OnListSelectionChanged">
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

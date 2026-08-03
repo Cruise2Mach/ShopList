@@ -12,6 +12,7 @@ public partial class ListsPage : ContentPage
     private bool _hasLoaded;
     private bool _hasSuccessfulLoad;
     private bool _isBusy;
+    private bool _isNavigating;
 
     public ListsPage(
         ListService listService,
@@ -133,6 +134,42 @@ public partial class ListsPage : ContentPage
         return true;
     }
 
+    private async void OnListSelectionChanged(
+        object? sender,
+        SelectionChangedEventArgs e)
+    {
+        if (_isBusy || _isNavigating)
+        {
+            ListsCollectionView.SelectedItem = null;
+            return;
+        }
+
+        if (e.CurrentSelection.FirstOrDefault() is not ShoppingList list)
+        {
+            return;
+        }
+
+        _isNavigating = true;
+
+        try
+        {
+            var parameters = new ShellNavigationQueryParameters
+            {
+                ["listId"] = list.Id.ToString("D"),
+                ["listName"] = list.Name
+            };
+
+            await Shell.Current.GoToAsync(
+                "shopping-list",
+                parameters);
+        }
+        finally
+        {
+            ListsCollectionView.SelectedItem = null;
+            _isNavigating = false;
+        }
+    }
+
     private async void OnSignOutClicked(object? sender, EventArgs e)
     {
         if (_isBusy)
@@ -166,6 +203,7 @@ public partial class ListsPage : ContentPage
         NewListNameEntry.IsEnabled = !isBusy;
         CreateListButton.IsEnabled = !isBusy;
         SignOutButton.IsEnabled = !isBusy;
+        ListsCollectionView.IsEnabled = !isBusy;
         UpdateListVisibility();
     }
 

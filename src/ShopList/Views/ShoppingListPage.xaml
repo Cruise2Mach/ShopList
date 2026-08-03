@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="ShopList.Views.ShoppingListPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Shopping list">
+
+    <Grid
+        Padding="24"
+        RowDefinitions="Auto,Auto,Auto,*"
+        RowSpacing="18"
+        MaximumWidthRequest="760"
+        HorizontalOptions="Fill">
+
+        <Label
+            x:Name="ListNameLabel"
+            Grid.Row="0"
+            Text="Shopping list"
+            FontSize="30"
+            FontAttributes="Bold" />
+
+        <VerticalStackLayout
+            Grid.Row="1"
+            Spacing="10">
+
+            <Entry
+                x:Name="ItemNameEntry"
+                Placeholder="Item name"
+                MaxLength="120"
+                ReturnType="Next"
+                ClearButtonVisibility="WhileEditing" />
+
+            <Entry
+                x:Name="QuantityEntry"
+                Placeholder="Quantity (optional)"
+                MaxLength="60"
+                ReturnType="Next"
+                ClearButtonVisibility="WhileEditing" />
+
+            <Entry
+                x:Name="NoteEntry"
+                Placeholder="Note (optional)"
+                MaxLength="500"
+                ReturnType="Go"
+                Completed="OnNoteCompleted"
+                ClearButtonVisibility="WhileEditing" />
+
+            <Button
+                x:Name="AddItemButton"
+                Text="Add item"
+                Clicked="OnAddItemClicked"
+                HorizontalOptions="Start" />
+
+        </VerticalStackLayout>
+
+        <VerticalStackLayout
+            Grid.Row="2"
+            Spacing="10">
+
+            <ActivityIndicator
+                x:Name="LoadingIndicator"
+                IsVisible="False"
+                IsRunning="False"
+                HorizontalOptions="Center" />
+
+            <Label
+                x:Name="MessageLabel"
+                IsVisible="False"
+                HorizontalTextAlignment="Center" />
+
+        </VerticalStackLayout>
+
+        <Grid Grid.Row="3">
+
+            <CollectionView
+                x:Name="ItemsCollectionView"
+                IsVisible="False"
+                SelectionMode="None">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Padding="12"
+                            Margin="0,0,0,10"
+                            Stroke="{AppThemeBinding Light=#D8D8D8, Dark=#444444}"
+                            StrokeShape="RoundRectangle 8">
+
+                            <Grid
+                                ColumnDefinitions="Auto,*,Auto"
+                                ColumnSpacing="12">
+
+                                <CheckBox
+                                    Grid.Column="0"
+                                    IsChecked="{Binding IsCompleted, Mode=OneWay}"
+                                    CheckedChanged="OnCompletedChanged"
+                                    VerticalOptions="Start" />
+
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="4"
+                                    VerticalOptions="Center">
+
+                                    <Label
+                                        Text="{Binding Name}"
+                                        FontSize="17"
+                                        FontAttributes="Bold">
+
+                                        <Label.Triggers>
+                                            <DataTrigger
+                                                TargetType="Label"
+                                                Binding="{Binding IsCompleted}"
+                                                Value="True">
+
+                                                <Setter
+                                                    Property="TextDecorations"
+                                                    Value="Strikethrough" />
+
+                                                <Setter
+                                                    Property="Opacity"
+                                                    Value="0.55" />
+
+                                            </DataTrigger>
+                                        </Label.Triggers>
+
+                                    </Label>
+
+                                    <Label
+                                        Text="{Binding Quantity, StringFormat='Quantity: {0}'}"
+                                        IsVisible="{Binding HasQuantity}"
+                                        FontSize="13"
+                                        Opacity="0.75" />
+
+                                    <Label
+                                        Text="{Binding Note}"
+                                        IsVisible="{Binding HasNote}"
+                                        FontSize="13"
+                                        Opacity="0.75" />
+
+                                </VerticalStackLayout>
+
+                                <Button
+                                    Grid.Column="2"
+                                    Text="Delete"
+                                    CommandParameter="{Binding .}"
+                                    Clicked="OnDeleteItemClicked"
+                                    VerticalOptions="Center" />
+
+                            </Grid>
+
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+            <Label
+                x:Name="EmptyStateLabel"
+                Text="This list has no items yet. Add the first one above."
+                IsVisible="False"
+                FontSize="16"
+                Opacity="0.7"
+                HorizontalTextAlignment="Center"
+                HorizontalOptions="Center"
+                VerticalOptions="Center" />
+
+        </Grid>
+
+    </Grid>
+</ContentPage>

@@ -30,11 +30,13 @@ public static class MauiProgram
         builder.Services.AddSingleton<SupabaseService>();
         builder.Services.AddSingleton<AuthService>();
         builder.Services.AddSingleton<ListService>();
+        builder.Services.AddSingleton<ItemService>();
 
         builder.Services.AddTransient<StartupPage>();
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<RegisterPage>();
         builder.Services.AddTransient<ListsPage>();
+        builder.Services.AddTransient<ShoppingListPage>();
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
