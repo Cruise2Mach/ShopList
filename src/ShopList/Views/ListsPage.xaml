@@ -6,29 +6,102 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Your lists">
 
-    <VerticalStackLayout
+    <Grid
         Padding="32"
-        Spacing="20"
-        MaximumWidthRequest="600"
-        HorizontalOptions="Center"
-        VerticalOptions="Center">
+        RowDefinitions="Auto,Auto,Auto,*,Auto"
+        RowSpacing="20"
+        MaximumWidthRequest="720"
+        HorizontalOptions="Fill">
 
         <Label
-            Text="You're signed in!"
+            Grid.Row="0"
+            Text="Your lists"
             FontSize="32"
-            FontAttributes="Bold"
-            HorizontalTextAlignment="Center" />
+            FontAttributes="Bold" />
 
-        <Label
-            Text="Shopping list creation comes next."
-            FontSize="16"
-            HorizontalTextAlignment="Center"
-            Opacity="0.7" />
+        <Grid
+            Grid.Row="1"
+            ColumnDefinitions="*,Auto"
+            ColumnSpacing="12">
+
+            <Entry
+                x:Name="NewListNameEntry"
+                Grid.Column="0"
+                Placeholder="New list name"
+                MaxLength="100"
+                ReturnType="Go"
+                Completed="OnNewListNameCompleted"
+                ClearButtonVisibility="WhileEditing" />
+
+            <Button
+                x:Name="CreateListButton"
+                Grid.Column="1"
+                Text="Create list"
+                Clicked="OnCreateListClicked" />
+
+        </Grid>
+
+        <VerticalStackLayout
+            Grid.Row="2"
+            Spacing="10">
+
+            <ActivityIndicator
+                x:Name="LoadingIndicator"
+                IsVisible="False"
+                IsRunning="False"
+                HorizontalOptions="Center" />
+
+            <Label
+                x:Name="MessageLabel"
+                IsVisible="False"
+                HorizontalTextAlignment="Center" />
+
+        </VerticalStackLayout>
+
+        <Grid Grid.Row="3">
+
+            <CollectionView
+                x:Name="ListsCollectionView"
+                IsVisible="False"
+                SelectionMode="None">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Padding="16"
+                            Margin="0,0,0,10"
+                            Stroke="{AppThemeBinding Light=#D8D8D8, Dark=#444444}"
+                            StrokeShape="RoundRectangle 8">
+
+                            <Label
+                                Text="{Binding Name}"
+                                FontSize="18"
+                                FontAttributes="Bold" />
+
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+            <Label
+                x:Name="EmptyStateLabel"
+                Text="You don't have any lists yet. Create your first one above."
+                IsVisible="False"
+                FontSize="16"
+                Opacity="0.7"
+                HorizontalTextAlignment="Center"
+                HorizontalOptions="Center"
+                VerticalOptions="Center" />
+
+        </Grid>
 
         <Button
             x:Name="SignOutButton"
+            Grid.Row="4"
             Text="Sign out"
-            Clicked="OnSignOutClicked" />
+            Clicked="OnSignOutClicked"
+            HorizontalOptions="Start" />
 
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

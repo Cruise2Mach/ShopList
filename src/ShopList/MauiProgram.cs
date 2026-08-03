@@ -29,6 +29,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<SessionStorageService>();
         builder.Services.AddSingleton<SupabaseService>();
         builder.Services.AddSingleton<AuthService>();
+        builder.Services.AddSingleton<ListService>();
 
         builder.Services.AddTransient<StartupPage>();
         builder.Services.AddTransient<LoginPage>();
